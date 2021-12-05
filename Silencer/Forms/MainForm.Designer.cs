@@ -1,5 +1,5 @@
 ﻿
-namespace Silencer
+namespace Silencer.Forms
 {
     partial class MainForm
     {
@@ -30,21 +30,6 @@ namespace Silencer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Spotify",
-            "Advertisement",
-            "Spotify"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Spotify",
-            "Spotify",
-            "Spotify"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
-            "",
-            "Spotify",
-            "",
-            "Spotify"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,19 +45,8 @@ namespace Silencer
             this.muteEnabled = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.sessionList = new Silencer.ListViewDoubleBuffered();
-            this.ProcessNameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.WindowNameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.SessionNameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.MutedColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.settingsList = new Silencer.ListViewDoubleBuffered();
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.removeButton = new System.Windows.Forms.Button();
-            this.addButton = new System.Windows.Forms.Button();
+            this.sessionsGrid = new System.Windows.Forms.DataGridView();
+            this.rulesGrid = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -84,25 +58,29 @@ namespace Silencer
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.recordProcessTextBox = new System.Windows.Forms.RichTextBox();
-            this.fileList = new Silencer.ListViewDoubleBuffered();
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.filesGrid = new System.Windows.Forms.DataGridView();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sessionsGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rulesGrid)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.filesGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.settingsToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -191,19 +169,18 @@ namespace Silencer
             this.tableLayoutPanel1.Controls.Add(this.muteEnabled, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.sessionList, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.settingsList, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.sessionsGrid, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.rulesGrid, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 6;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.555556F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.88889F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.555556F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.88889F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(470, 505);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
@@ -213,7 +190,7 @@ namespace Silencer
             this.muteEnabled.Dock = System.Windows.Forms.DockStyle.Fill;
             this.muteEnabled.Location = new System.Drawing.Point(3, 3);
             this.muteEnabled.Name = "muteEnabled";
-            this.muteEnabled.Size = new System.Drawing.Size(464, 44);
+            this.muteEnabled.Size = new System.Drawing.Size(464, 50);
             this.muteEnabled.TabIndex = 0;
             this.muteEnabled.Text = "Enabled";
             this.muteEnabled.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -223,9 +200,9 @@ namespace Silencer
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 50);
+            this.label1.Location = new System.Drawing.Point(3, 56);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(464, 25);
+            this.label1.Size = new System.Drawing.Size(464, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "Detected audio sessions";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -234,133 +211,33 @@ namespace Silencer
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 251);
+            this.label2.Location = new System.Drawing.Point(3, 280);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(464, 25);
+            this.label2.Size = new System.Drawing.Size(464, 28);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Settings";
+            this.label2.Text = "Rules";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // sessionList
+            // sessionsGrid
             // 
-            this.sessionList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ProcessNameColumn,
-            this.WindowNameColumn,
-            this.SessionNameColumn,
-            this.MutedColumn});
-            this.sessionList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sessionList.FullRowSelect = true;
-            this.sessionList.HideSelection = false;
-            this.sessionList.Location = new System.Drawing.Point(3, 78);
-            this.sessionList.Name = "sessionList";
-            this.sessionList.Size = new System.Drawing.Size(464, 170);
-            this.sessionList.TabIndex = 3;
-            this.sessionList.UseCompatibleStateImageBehavior = false;
-            this.sessionList.View = System.Windows.Forms.View.Details;
+            this.sessionsGrid.AllowUserToAddRows = false;
+            this.sessionsGrid.AllowUserToDeleteRows = false;
+            this.sessionsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.sessionsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sessionsGrid.Location = new System.Drawing.Point(3, 87);
+            this.sessionsGrid.Name = "sessionsGrid";
+            this.sessionsGrid.ReadOnly = true;
+            this.sessionsGrid.Size = new System.Drawing.Size(464, 190);
+            this.sessionsGrid.TabIndex = 6;
             // 
-            // ProcessNameColumn
+            // rulesGrid
             // 
-            this.ProcessNameColumn.Text = "Process name";
-            this.ProcessNameColumn.Width = 100;
-            // 
-            // WindowNameColumn
-            // 
-            this.WindowNameColumn.Text = "Window name";
-            this.WindowNameColumn.Width = 100;
-            // 
-            // SessionNameColumn
-            // 
-            this.SessionNameColumn.Text = "Session name";
-            this.SessionNameColumn.Width = 100;
-            // 
-            // MutedColumn
-            // 
-            this.MutedColumn.Text = "Muted";
-            this.MutedColumn.Width = 100;
-            // 
-            // settingsList
-            // 
-            this.settingsList.CheckBoxes = true;
-            this.settingsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader8});
-            this.settingsList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.settingsList.FullRowSelect = true;
-            this.settingsList.HideSelection = false;
-            listViewItem1.Checked = true;
-            listViewItem1.StateImageIndex = 1;
-            listViewItem2.Checked = true;
-            listViewItem2.StateImageIndex = 1;
-            listViewItem3.Checked = true;
-            listViewItem3.StateImageIndex = 1;
-            this.settingsList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3});
-            this.settingsList.Location = new System.Drawing.Point(3, 329);
-            this.settingsList.Name = "settingsList";
-            this.settingsList.Size = new System.Drawing.Size(464, 173);
-            this.settingsList.TabIndex = 4;
-            this.settingsList.UseCompatibleStateImageBehavior = false;
-            this.settingsList.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Enabled";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Process name";
-            this.columnHeader3.Width = 100;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Window name";
-            this.columnHeader4.Width = 100;
-            // 
-            // columnHeader8
-            // 
-            this.columnHeader8.Text = "Session name";
-            this.columnHeader8.Width = 100;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.removeButton, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.addButton, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 279);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 44);
-            this.tableLayoutPanel2.TabIndex = 5;
-            // 
-            // removeButton
-            // 
-            this.removeButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.removeButton.Location = new System.Drawing.Point(235, 3);
-            this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(226, 38);
-            this.removeButton.TabIndex = 1;
-            this.removeButton.Text = "Remove";
-            this.removeButton.UseVisualStyleBackColor = true;
-            this.removeButton.Click += new System.EventHandler(this.OnRemoveButtonClicked);
-            // 
-            // addButton
-            // 
-            this.addButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.addButton.Location = new System.Drawing.Point(3, 3);
-            this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(226, 38);
-            this.addButton.TabIndex = 0;
-            this.addButton.Text = "Add";
-            this.addButton.UseVisualStyleBackColor = true;
-            this.addButton.Click += new System.EventHandler(this.OnAddButtonClicked);
+            this.rulesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.rulesGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rulesGrid.Location = new System.Drawing.Point(3, 311);
+            this.rulesGrid.Name = "rulesGrid";
+            this.rulesGrid.Size = new System.Drawing.Size(464, 191);
+            this.rulesGrid.TabIndex = 7;
             // 
             // tabPage2
             // 
@@ -380,7 +257,7 @@ namespace Silencer
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel6, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.fileList, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.filesGrid, 0, 3);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -502,28 +379,38 @@ namespace Silencer
             this.recordProcessTextBox.TabIndex = 0;
             this.recordProcessTextBox.Text = "Spotify";
             // 
-            // fileList
+            // filesGrid
             // 
-            this.fileList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader9});
-            this.fileList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fileList.HideSelection = false;
-            this.fileList.Location = new System.Drawing.Point(3, 162);
-            this.fileList.Name = "fileList";
-            this.fileList.Size = new System.Drawing.Size(464, 340);
-            this.fileList.TabIndex = 5;
-            this.fileList.UseCompatibleStateImageBehavior = false;
-            this.fileList.View = System.Windows.Forms.View.Details;
+            this.filesGrid.AllowUserToAddRows = false;
+            this.filesGrid.AllowUserToDeleteRows = false;
+            this.filesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.filesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column10});
+            this.filesGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.filesGrid.Location = new System.Drawing.Point(3, 162);
+            this.filesGrid.Name = "filesGrid";
+            this.filesGrid.ReadOnly = true;
+            this.filesGrid.Size = new System.Drawing.Size(464, 340);
+            this.filesGrid.TabIndex = 5;
             // 
-            // columnHeader9
+            // Column10
             // 
-            this.columnHeader9.Text = "Files";
-            this.columnHeader9.Width = 400;
+            this.Column10.HeaderText = "Files";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
+            this.Column10.Width = 400;
             // 
             // updateTimer
             // 
             this.updateTimer.Enabled = true;
             this.updateTimer.Interval = 500;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnMenuSettingsClicked);
             // 
             // MainForm
             // 
@@ -547,7 +434,8 @@ namespace Silencer
             this.tabPage1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sessionsGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rulesGrid)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -555,6 +443,7 @@ namespace Silencer
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.filesGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -573,20 +462,11 @@ namespace Silencer
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private ListViewDoubleBuffered sessionList;
-        private ListViewDoubleBuffered settingsList;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Timer updateTimer;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button removeButton;
-        private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.ToolStripMenuItem exportSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Button stopButton;
@@ -597,12 +477,11 @@ namespace Silencer
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RichTextBox recordProcessTextBox;
         private System.Windows.Forms.RichTextBox statusTextBox;
-        private ListViewDoubleBuffered fileList;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        public System.Windows.Forms.ColumnHeader WindowNameColumn;
-        public System.Windows.Forms.ColumnHeader SessionNameColumn;
-        public System.Windows.Forms.ColumnHeader MutedColumn;
-        public System.Windows.Forms.ColumnHeader ProcessNameColumn;
+        private System.Windows.Forms.DataGridView sessionsGrid;
+        private System.Windows.Forms.DataGridView rulesGrid;
+        private System.Windows.Forms.DataGridView filesGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

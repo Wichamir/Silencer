@@ -16,7 +16,7 @@ namespace Silencer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new Silencer.Forms.MainForm());
         }
     }
 }

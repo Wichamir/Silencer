@@ -1,5 +1,5 @@
 ﻿
-namespace Silencer
+namespace Silencer.Forms
 {
     partial class AboutForm
     {

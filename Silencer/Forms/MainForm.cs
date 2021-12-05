@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
+using System.ComponentModel;
 
 using NAudio.CoreAudioApi;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Silencer
+namespace Silencer.Forms
 {
     public partial class MainForm : Form
     {
@@ -16,51 +16,59 @@ namespace Silencer
 
         private SessionObserver sessionObserver;
 
+        private readonly BindingList<SessionInfo> sessionsList;
+        private readonly BindingList<RuleInfo> rulesList;
+        private readonly BindingList<string> filesList;
+
+        #region Initialization
+
         public MainForm()
         {
+            sessionsList = new BindingList<SessionInfo>();
+            rulesList = new BindingList<RuleInfo>();
+            filesList = new BindingList<string>();
+
             InitializeComponent();
+
+            Utils.SetDataGridViewDoubleBuffered(sessionsGrid, true);
+            Utils.SetDataGridViewDoubleBuffered(rulesGrid, true);
+            Utils.SetDataGridViewDoubleBuffered(filesGrid, true);
+
             InitializeAudioApi();
             InitializeConfiguration();
         }
 
         public void InitializeAudioApi()
         {
-            UpdateSessionList();
+            UpdateSessionsList();
             updateTimer.Tick += OnUpdateTimerTick;
         }
 
         public void InitializeConfiguration()
         {
-            if (!File.Exists(ConfigDefaultPath))
-                Utils.SaveConfiguration(ConfigDefaultPath, GetConfiguration());
+            // binding
+            sessionsGrid.DataSource = sessionsList;
+            rulesGrid.DataSource = rulesList;
+
+            // loading conf from previous session
             if (File.Exists(ConfigCurrentPath))
                 SetConfiguration(Utils.LoadConfiguration(ConfigCurrentPath));
         }
 
+        #endregion
+
+        #region Utility
+
         public void AddSession(AudioSessionControl session)
         {
-            var names = Utils.GetSessionInfo(session);
-            var isMuted = session.SimpleAudioVolume.Mute ? "Yes" : "No";
-            var item = names.GetListViewItem();
-            item.SubItems.Add(isMuted);
-            sessionList.Items.Add(item);
+            sessionsList.Add(Utils.GetSessionInfo(session));
         }
 
         public Configuration GetConfiguration()
         {
-            var settings = new List<SettingInfo>();
-            for(int i = 0; i < settingsList.Items.Count; i++)
-            {
-                settings.Add(
-                    new SettingInfo(
-                        settingsList.Items[i].Checked,
-                        settingsList.Items[i].SubItems[1].Text,
-                        settingsList.Items[i].SubItems[2].Text,
-                        settingsList.Items[i].SubItems[3].Text
-                    )
-                );
-            }
-            return new Configuration(muteEnabled.Checked, settings.ToArray(), recordProcessTextBox.Text);
+            var rulesArray = new RuleInfo[rulesList.Count];
+            rulesList.CopyTo(rulesArray, 0);
+            return new Configuration(muteEnabled.Checked, rulesArray, recordProcessTextBox.Text);
         }
 
         public void SetConfiguration(Configuration config)
@@ -70,34 +78,40 @@ namespace Silencer
                 MessageBox.Show("Config file is invalid!", "Error!");
                 return;
             }
-            muteEnabled.Checked = config.MuteEnabled;
-            settingsList.Items.Clear();
-            settingsList.Items.AddRange(config.GetListViewItems());
-            recordProcessTextBox.Text = config.RecordProcessName;
+            try
+            {
+                muteEnabled.Checked = config.MuteEnabled;
+                rulesList.Clear();
+                foreach (var rule in config.Rules)
+                    rulesList.Add(rule);
+                recordProcessTextBox.Text = config.RecordProcessName;
+            }
+            catch
+            {
+                MessageBox.Show("Config file may be invalid.", "Error!");
+            }
         }
 
-        public void UpdateSessionList()
+        #endregion
+
+        #region Updating
+
+        public void UpdateSessionsList()
         {
-            sessionList.Items.Clear();
+            sessionsList.Clear();
             Utils.EnumerateSessions((session) => AddSession(session));
         }
 
-        public void UpdateFileList()
+        public void UpdateFilesList()
         {
             if (sessionObserver == null)
                 return;
 
             var files = Directory.GetFiles(sessionObserver.Directory);
-            var filesValid = new List<string>();
+            filesList.Clear();
             foreach (var filepath in files)
                 if (filepath.EndsWith(".wav"))
-                    filesValid.Add(filepath);
-            ListViewItem[] items = new ListViewItem[filesValid.Count];
-            for (int i = 0; i < filesValid.Count; i++)
-                items[i] = new ListViewItem(Path.GetFileName(filesValid[i]));
-
-            fileList.Items.Clear();
-            fileList.Items.AddRange(items);
+                    filesList.Add(Path.GetFileName(filepath));
         }
 
         public void UpdateMute()
@@ -105,19 +119,15 @@ namespace Silencer
             Utils.EnumerateSessions((session) =>
             {
                 var mute = false;
-                foreach (ListViewItem setting in settingsList.Items)
+                foreach (var rule in rulesList)
                 {
                     var detectedNames = Utils.GetSessionInfo(session);
 
-                    var settingsProcessName = setting.SubItems[1].Text;
-                    var settingsWindowName = setting.SubItems[2].Text;
-                    var settingsSessionName = setting.SubItems[3].Text;
-
                     mute = (
-                        LikeOperator.LikeString(detectedNames.ProcessName, settingsProcessName, CompareMethod.Text) &&
-                        LikeOperator.LikeString(detectedNames.WindowName, settingsWindowName, CompareMethod.Text) &&
-                        LikeOperator.LikeString(detectedNames.SessionName, settingsSessionName, CompareMethod.Text) &&
-                        setting.Checked && muteEnabled.Checked
+                        LikeOperator.LikeString(detectedNames.ProcessName, rule.ProcessName, CompareMethod.Text) &&
+                        LikeOperator.LikeString(detectedNames.WindowName, rule.WindowName, CompareMethod.Text) &&
+                        LikeOperator.LikeString(detectedNames.SessionName, rule.SessionName, CompareMethod.Text) &&
+                        rule.Enabled && muteEnabled.Checked
                     );
 
                     if (mute)
@@ -127,43 +137,16 @@ namespace Silencer
             });
         }
 
-        // event handlers
+        #endregion
+
+        #region Event handlers
 
         private void OnUpdateTimerTick(object sender, EventArgs e)
         {
-            UpdateSessionList();
-            UpdateFileList();
+            UpdateSessionsList();
+            UpdateFilesList();
             UpdateMute();
             sessionObserver?.Update();
-        }
-
-        private void OnAddButtonClicked(object sender, EventArgs e)
-        {
-            using(var form = new AddSettingForm())
-            {
-                var result = form.ShowDialog();
-
-                switch (result)
-                {
-                    case DialogResult.OK:
-                        var item = new ListViewItem(new string[] { 
-                            string.Empty,
-                            form.ProcessNameTextBox.Text,
-                            form.WindowNameTextBox.Text,
-                            form.SessionNameTextBox.Text
-                        });
-                        settingsList.Items.Add(item);
-                        break;
-                }
-            }
-        }
-
-        private void OnRemoveButtonClicked(object sender, EventArgs e)
-        {
-            foreach (ListViewItem item in settingsList.SelectedItems)
-            {
-                settingsList.Items.Remove(item);
-            }
         }
 
         private void OnStartButtonClicked(object sender, EventArgs e)
@@ -267,5 +250,20 @@ namespace Silencer
                 }
             }
         }
+
+        private void OnMenuSettingsClicked(object sender, EventArgs e)
+        {
+            using(var dialog = new SettingsForm())
+            {
+                switch (dialog.ShowDialog())
+                {
+                    case DialogResult.OK:
+                        MessageBox.Show("OK");
+                        break;
+                }
+            }
+        }
+
+        #endregion
     }
 }

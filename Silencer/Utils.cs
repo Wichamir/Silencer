@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 using NAudio.CoreAudioApi;
@@ -10,10 +11,12 @@ using Newtonsoft.Json;
 namespace Silencer
 {
     /// <summary>
-    /// Utility functions.
+    /// Static utility methods.
     /// </summary>
     static class Utils
     {
+        #region Audio API wrapping methods
+
         public static MMDeviceEnumerator GetDeviceEnumerator()
         {
             return new MMDeviceEnumerator();
@@ -57,14 +60,18 @@ namespace Silencer
             try
             {
                 Process process = Process.GetProcessById((int)session.GetProcessID);
-                result = new SessionInfo(process.ProcessName, process.MainWindowTitle, session.DisplayName);
+                result = new SessionInfo(process.ProcessName, process.MainWindowTitle, session.DisplayName, session.SimpleAudioVolume.Mute);
             }
             catch
             {
-                result = new SessionInfo("", "", session.DisplayName);
+                result = new SessionInfo("", "", session.DisplayName, false);
             }
             return result;
         }
+
+        #endregion
+
+        #region File IO
 
         public static void SaveConfiguration(string filepath, Configuration config)
         {
@@ -91,5 +98,18 @@ namespace Silencer
             }
             return result;
         }
+
+        #endregion
+
+        #region Extension methods
+
+        public static void SetDataGridViewDoubleBuffered(this DataGridView dgv, bool setting)
+        {
+            Type dgvType = dgv.GetType();
+            PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(dgv, setting, null);
+        }
+
+        #endregion
     }
 }

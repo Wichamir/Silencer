@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Silencer.Forms
 {
-    public partial class HelpForm : Form
+    public partial class SettingsForm : Form
     {
-        public HelpForm()
+        public SettingsForm()
         {
             InitializeComponent();
         }
