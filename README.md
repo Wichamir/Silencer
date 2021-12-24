@@ -2,6 +2,9 @@
 
 Silencer is a tool for automating audio management on MS Windows.
 
+![screenshot](Screenshots/screenshot1.png)
+![screenshot](Screenshots/screenshot2.png)
+
 ## Requirements
 
 Silencer uses .NET Framework 4.7.2.
