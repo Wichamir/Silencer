@@ -124,7 +124,7 @@ Muting enables you to mute audio sessions based on:
 - process' name
 - window's title
 - session's name
-Edit settings list on the botton to choose which sessions you want to mute.
+Edit rules on the botton to choose which sessions you want to mute.
 You can use wildcard characters like * and ?
 
 Recording enables you to record the whole device's audio output based on window's title.

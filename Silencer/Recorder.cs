@@ -5,15 +5,15 @@ using NAudio.Wave;
 namespace Silencer
 {
     /// <summary>
-    /// Used to record multimedia device output to a specified file.
+    /// Records multimedia device output to a specified file.
     /// </summary>
     class Recorder : IDisposable
     {
         public bool IsRecording { get; private set; }
 
-        private WasapiLoopbackCapture capture;
-        private WaveFileWriter writer;
-        private MMDevice device;
+        private readonly WasapiLoopbackCapture capture;
+        private readonly WaveFileWriter writer;
+        private readonly MMDevice device;
 
         public Recorder(MMDevice device, string filename)
         {

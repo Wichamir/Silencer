@@ -37,6 +37,7 @@ namespace Silencer.Forms
             this.importSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -59,9 +60,7 @@ namespace Silencer.Forms
             this.label3 = new System.Windows.Forms.Label();
             this.recordProcessTextBox = new System.Windows.Forms.RichTextBox();
             this.filesGrid = new System.Windows.Forms.DataGridView();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -125,6 +124,13 @@ namespace Silencer.Forms
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnMenuExitClicked);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnMenuSettingsClicked);
             // 
             // aboutToolStripMenuItem
             // 
@@ -384,8 +390,6 @@ namespace Silencer.Forms
             this.filesGrid.AllowUserToAddRows = false;
             this.filesGrid.AllowUserToDeleteRows = false;
             this.filesGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.filesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column10});
             this.filesGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.filesGrid.Location = new System.Drawing.Point(3, 162);
             this.filesGrid.Name = "filesGrid";
@@ -393,24 +397,10 @@ namespace Silencer.Forms
             this.filesGrid.Size = new System.Drawing.Size(464, 340);
             this.filesGrid.TabIndex = 5;
             // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "Files";
-            this.Column10.Name = "Column10";
-            this.Column10.ReadOnly = true;
-            this.Column10.Width = 400;
-            // 
             // updateTimer
             // 
             this.updateTimer.Enabled = true;
             this.updateTimer.Interval = 500;
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.OnMenuSettingsClicked);
             // 
             // MainForm
             // 
@@ -480,7 +470,6 @@ namespace Silencer.Forms
         private System.Windows.Forms.DataGridView sessionsGrid;
         private System.Windows.Forms.DataGridView rulesGrid;
         private System.Windows.Forms.DataGridView filesGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }

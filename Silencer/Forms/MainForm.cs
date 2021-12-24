@@ -18,7 +18,8 @@ namespace Silencer.Forms
 
         private readonly BindingList<SessionInfo> sessionsList;
         private readonly BindingList<RuleInfo> rulesList;
-        private readonly BindingList<string> filesList;
+        private readonly BindingList<AudioFileInfo> filesList;
+        private readonly BindingList<SettingInfo> settingsList;
 
         #region Initialization
 
@@ -26,7 +27,8 @@ namespace Silencer.Forms
         {
             sessionsList = new BindingList<SessionInfo>();
             rulesList = new BindingList<RuleInfo>();
-            filesList = new BindingList<string>();
+            filesList = new BindingList<AudioFileInfo>();
+            settingsList = new BindingList<SettingInfo>();
 
             InitializeComponent();
 
@@ -40,7 +42,7 @@ namespace Silencer.Forms
 
         public void InitializeAudioApi()
         {
-            UpdateSessionsList();
+            UpdateSessionsGrid();
             updateTimer.Tick += OnUpdateTimerTick;
         }
 
@@ -49,6 +51,7 @@ namespace Silencer.Forms
             // binding
             sessionsGrid.DataSource = sessionsList;
             rulesGrid.DataSource = rulesList;
+            filesGrid.DataSource = filesList;
 
             // loading conf from previous session
             if (File.Exists(ConfigCurrentPath))
@@ -68,7 +71,9 @@ namespace Silencer.Forms
         {
             var rulesArray = new RuleInfo[rulesList.Count];
             rulesList.CopyTo(rulesArray, 0);
-            return new Configuration(muteEnabled.Checked, rulesArray, recordProcessTextBox.Text);
+            var settingsArray = new SettingInfo[settingsList.Count];
+            settingsList.CopyTo(settingsArray, 0);
+            return new Configuration(muteEnabled.Checked, rulesArray, recordProcessTextBox.Text, settingsArray);
         }
 
         public void SetConfiguration(Configuration config)
@@ -85,6 +90,11 @@ namespace Silencer.Forms
                 foreach (var rule in config.Rules)
                     rulesList.Add(rule);
                 recordProcessTextBox.Text = config.RecordProcessName;
+                settingsList.Clear();
+                foreach(var setting in config.Settings)
+                {
+                    settingsList.Add(setting);
+                }
             }
             catch
             {
@@ -92,17 +102,29 @@ namespace Silencer.Forms
             }
         }
 
+        public SettingInfo GetSettingByName(string name)
+        {
+            foreach(var setting in settingsList)
+            {
+                if(setting.Name == name)
+                {
+                    return setting;
+                }
+            }
+            return null;
+        }
+
         #endregion
 
         #region Updating
 
-        public void UpdateSessionsList()
+        public void UpdateSessionsGrid()
         {
             sessionsList.Clear();
             Utils.EnumerateSessions((session) => AddSession(session));
         }
 
-        public void UpdateFilesList()
+        public void UpdateFilesGrid()
         {
             if (sessionObserver == null)
                 return;
@@ -111,7 +133,7 @@ namespace Silencer.Forms
             filesList.Clear();
             foreach (var filepath in files)
                 if (filepath.EndsWith(".wav"))
-                    filesList.Add(Path.GetFileName(filepath));
+                    filesList.Add(new AudioFileInfo(Path.GetFileName(filepath)));
         }
 
         public void UpdateMute()
@@ -143,8 +165,8 @@ namespace Silencer.Forms
 
         private void OnUpdateTimerTick(object sender, EventArgs e)
         {
-            UpdateSessionsList();
-            UpdateFilesList();
+            UpdateSessionsGrid();
+            UpdateFilesGrid();
             UpdateMute();
             sessionObserver?.Update();
         }
@@ -153,21 +175,34 @@ namespace Silencer.Forms
         {
             if (sessionObserver != null)
                 return;
+            
             using(var deviceEnumerator = Utils.GetDeviceEnumerator())
             {
                 var device = Utils.GetDefaultDevice(deviceEnumerator);
+
+                var directorySetting = GetSettingByName("RecordDirectory");
                 string directory = string.Empty;
-                using (var dialog = new FolderBrowserDialog())
+                if(directorySetting == null)
                 {
-                    var result = dialog.ShowDialog();
-                    switch (result)
+                    using (var dialog = new FolderBrowserDialog())
                     {
-                        case DialogResult.OK:
-                            directory = dialog.SelectedPath;
-                            break;
+                        var result = dialog.ShowDialog();
+                        switch (result)
+                        {
+                            case DialogResult.OK:
+                                directory = dialog.SelectedPath;
+                                break;
+                        }
                     }
+
+                    settingsList.Add(new SettingInfo("RecordDirectory", directory));
                 }
-                if (directory == string.Empty)
+                else
+                {
+                    directory = directorySetting.Value as string;
+                }
+                
+                if (directory == string.Empty || directory == null)
                     return;
 
                 AudioSessionControl session = null;
@@ -255,10 +290,12 @@ namespace Silencer.Forms
         {
             using(var dialog = new SettingsForm())
             {
+                dialog.SettingsGrid.DataSource = settingsList;
                 switch (dialog.ShowDialog())
                 {
                     case DialogResult.OK:
                         MessageBox.Show("OK");
+                        // TODO
                         break;
                 }
             }

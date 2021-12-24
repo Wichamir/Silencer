@@ -101,6 +101,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioFileInfo.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
@@ -132,6 +133,7 @@
     <Compile Include="Recorder.cs" />
     <Compile Include="SessionObserver.cs" />
     <Compile Include="RuleInfo.cs" />
+    <Compile Include="SettingInfo.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>

@@ -15,6 +15,8 @@ namespace Silencer.Forms
         public SettingsForm()
         {
             InitializeComponent();
+
+            Utils.SetDataGridViewDoubleBuffered(SettingsGrid, true);
         }
     }
 }
