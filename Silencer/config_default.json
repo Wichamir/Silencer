@@ -1,0 +1,31 @@
+{
+  "MuteEnabled": true,
+  "Rules": [
+    {
+      "Enabled": true,
+      "ProcessName": "Spotify",
+      "WindowName": "Advertisement",
+      "SessionName": "Spotify"
+    },
+    {
+      "Enabled": true,
+      "ProcessName": "Spotify",
+      "WindowName": "Spotify",
+      "SessionName": "Spotify"
+    },
+    {
+      "Enabled": true,
+      "ProcessName": "Spotify",
+      "WindowName": "",
+      "SessionName": "Spotify"
+    },
+    {
+      "Enabled": true,
+      "ProcessName": "Spotify",
+      "WindowName": "Advertisement",
+      "SessionName": ""
+    }
+  ],
+  "RecordProcessName": "Spotify",
+  "Settings": []
+}

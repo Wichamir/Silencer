@@ -11,7 +11,7 @@ namespace Silencer.Forms
 {
     public partial class MainForm : Form
     {
-        public readonly string ConfigDefaultPath = Application.UserAppDataPath + @"\config_default.json";
+        public readonly string ConfigDefaultPath = Application.StartupPath + @"\config_default.json";
         public readonly string ConfigCurrentPath = Application.UserAppDataPath + @"\config_current.json";
 
         private SessionObserver sessionObserver;
@@ -56,6 +56,8 @@ namespace Silencer.Forms
             // loading conf from previous session
             if (File.Exists(ConfigCurrentPath))
                 SetConfiguration(Utils.LoadConfiguration(ConfigCurrentPath));
+            else if (File.Exists(ConfigDefaultPath))
+                SetConfiguration(Utils.LoadConfiguration(ConfigDefaultPath));
         }
 
         #endregion
